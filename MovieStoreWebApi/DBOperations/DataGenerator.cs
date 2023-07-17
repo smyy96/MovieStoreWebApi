@@ -14,9 +14,7 @@ namespace MovieStoreWebApi.DBOperations
                     return;
                 }
 
-                context.Movies.AddRange(
-                    
-                    new Movie
+                context.Movies.AddRange(new Movie
                 {
                     MovieId = 1,
                     MovieName = "Film 1",
