@@ -16,6 +16,7 @@ using MovieStoreWebApi.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace WebApplication1
@@ -45,6 +46,8 @@ namespace WebApplication1
              * Burada veri tabanýnýn ne olacaðýný belirliyoruz inmemory- mssql .... 
              */   
             services.AddDbContext<MovieStoreDbContext>(options => options.UseInMemoryDatabase(databaseName: "MovieStoreDB"));
+
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

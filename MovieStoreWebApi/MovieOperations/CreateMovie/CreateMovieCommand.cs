@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using MovieStoreWebApi.DBOperations;
+using MovieStoreWebApi.Entity;
 
 namespace MovieStoreWebApi.MovieOperations.CreateMovie
 {
@@ -8,10 +10,12 @@ namespace MovieStoreWebApi.MovieOperations.CreateMovie
 
         public CreateMovieModel Model { get; set; }
         private readonly MovieStoreDbContext _dbContext;
+        private readonly IMapper _mapper;
 
-        public CreateMovieCommand(MovieStoreDbContext dbContext)
+        public CreateMovieCommand(MovieStoreDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
+            _mapper = mapper;
         }
 
 
@@ -21,12 +25,7 @@ namespace MovieStoreWebApi.MovieOperations.CreateMovie
             if (movie is not null)
                 throw new InvalidOperationException("The movie is already available.");
 
-            movie = new Entity.Movie();
-            movie.MovieName = Model.MovieName;
-            movie.MovieYear = Model.MovieYear;
-            movie.GenreId = Model.GenreId;
-            movie.Price = Model.Price;
-
+            movie = _mapper.Map<Movie>(Model); // Modeldeki değerleri Movie entitysine mapliyoruz.
 
             _dbContext.Movies.Add(movie);
             _dbContext.SaveChanges();
@@ -37,7 +36,7 @@ namespace MovieStoreWebApi.MovieOperations.CreateMovie
     public class CreateMovieModel
     {
 
-        public string MovieName { get; set; }
+        public string? MovieName { get; set; }
         public int MovieYear { get; set; }
         public int GenreId { get; set; }
         public decimal Price { get; set; }

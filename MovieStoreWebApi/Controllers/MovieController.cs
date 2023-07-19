@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieStoreWebApi.DBOperations;
 using MovieStoreWebApi.Entity;
@@ -16,16 +17,19 @@ namespace MovieStoreWebApi.Controllers
     {
         private readonly MovieStoreDbContext _context;
 
-        public MovieController(MovieStoreDbContext context)
+        private readonly IMapper _mapper;
+
+        public MovieController(MovieStoreDbContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
 
         [HttpGet]
         public IActionResult Get()
         {
-            GetMovieQuery getMovieQuery = new GetMovieQuery(_context);
+            GetMovieQuery getMovieQuery = new GetMovieQuery(_context, _mapper);
             var result = getMovieQuery.Handle();
             return Ok(result);
         }
@@ -37,7 +41,7 @@ namespace MovieStoreWebApi.Controllers
             MovieDetailViewModel result;
             try
             {
-                GetMovieDetailQuery getMovieDetailQuery = new GetMovieDetailQuery(_context);
+                GetMovieDetailQuery getMovieDetailQuery = new GetMovieDetailQuery(_context, _mapper);
                 getMovieDetailQuery.MovieId = id;
                 result = getMovieDetailQuery.Handle();
             }
@@ -54,7 +58,7 @@ namespace MovieStoreWebApi.Controllers
         [HttpPost]
         public IActionResult AddMovie([FromBody] CreateMovieModel newMovie)
         {
-            CreateMovieCommand command = new CreateMovieCommand(_context);
+            CreateMovieCommand command = new CreateMovieCommand(_context, _mapper);
             try
             {
                 command.Model = newMovie;
@@ -65,7 +69,7 @@ namespace MovieStoreWebApi.Controllers
                 return BadRequest(ex.Message);
             }            
             
-            return Ok();
+            return Ok("Success");
         }
 
 
