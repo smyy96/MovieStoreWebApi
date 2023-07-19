@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using FluentValidation;
+using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MovieStoreWebApi.DBOperations;
@@ -62,6 +64,8 @@ namespace MovieStoreWebApi.Controllers
             try
             {
                 command.Model = newMovie;
+                CreateMovieCommandValidator validations = new CreateMovieCommandValidator();
+                validations.ValidateAndThrow(command);                
                 command.Handle();
             }
             catch (Exception ex)
@@ -101,6 +105,8 @@ namespace MovieStoreWebApi.Controllers
             {
                 DeleteMovieCommand command = new DeleteMovieCommand(_context);
                 command.Movie_Id = id;
+                DeleteMovieCommandValidator validations = new DeleteMovieCommandValidator();
+                validations.ValidateAndThrow(command);
                 command.Handle();
             }
             catch (Exception ex)

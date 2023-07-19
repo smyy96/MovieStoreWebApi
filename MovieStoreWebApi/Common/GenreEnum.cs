@@ -3,7 +3,7 @@
     public enum GenreEnum
     {
          
-        ACTION,
+        ACTION=1,
         ADVENTURE,
         ANIMATION,
         COMEDY,
