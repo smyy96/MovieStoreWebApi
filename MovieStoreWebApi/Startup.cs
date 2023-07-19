@@ -40,6 +40,10 @@ namespace WebApplication1
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Movie Store", Version = "v1" });
             });
 
+
+            /*hizmetlerin yapýlandýrýlmasý için kullanýlýr.
+             * Burada veri tabanýnýn ne olacaðýný belirliyoruz inmemory- mssql .... 
+             */   
             services.AddDbContext<MovieStoreDbContext>(options => options.UseInMemoryDatabase(databaseName: "MovieStoreDB"));
         }
 

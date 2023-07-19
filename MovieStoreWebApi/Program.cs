@@ -19,7 +19,7 @@ namespace WebApplication1
             using(var scope=host.Services.CreateScope())
             {
                 var services=scope.ServiceProvider;
-                DataGenerator.Initialize(services);
+                DataGenerator.Initialize(services); // veritabaný örnekleme ve veri ekleme yapýlýr
             }
                 
                 host.Run();

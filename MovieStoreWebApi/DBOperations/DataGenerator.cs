@@ -5,6 +5,9 @@ namespace MovieStoreWebApi.DBOperations
 {
     public class DataGenerator
     {
+        /*
+         * serviceProvider.GetRequiredService<DbContextOptions<MovieStoreDbContext>>()) yöntemiyle DbContextOptions<MovieStoreDbContext> türünden bir örneğe erişilir ve MovieStoreDbContext sınıfının bir örneği oluşturulur.
+         */
         public static void Initialize(IServiceProvider serviceProvider) 
         {
             using(var context=new MovieStoreDbContext(serviceProvider.GetRequiredService<DbContextOptions<MovieStoreDbContext>>())) 
@@ -16,10 +19,10 @@ namespace MovieStoreWebApi.DBOperations
 
                 context.Movies.AddRange(new Movie
                 {
-                    MovieId = 1,
+                    
                     MovieName = "Film 1",
                     MovieYear = 2021,
-                    GenreId = "Action",
+                    GenreId = 1,
                     Director = new Director { DirectorName = "Director 1" },
                     Actors = new List<Actor>
                     {
@@ -30,10 +33,10 @@ namespace MovieStoreWebApi.DBOperations
                 },
                 new Movie
                 {
-                    MovieId = 2,
+                    
                     MovieName = "Film 2",
                     MovieYear = 2020,
-                    GenreId = "Comedy",
+                    GenreId = 2,
                     Director = new Director { DirectorName = "Director 2" },
                     Actors = new List<Actor>
                     {
@@ -44,10 +47,10 @@ namespace MovieStoreWebApi.DBOperations
                 },
                 new Movie
                 {
-                    MovieId = 3,
+                    
                     MovieName = "Film 3",
                     MovieYear = 2019,
-                    GenreId = "Drama",
+                    GenreId = 2,
                     Director = new Director { DirectorName = "Director 3" },
                     Actors = new List<Actor>
                     {

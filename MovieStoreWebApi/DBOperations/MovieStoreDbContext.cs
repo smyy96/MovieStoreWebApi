@@ -3,13 +3,21 @@ using MovieStoreWebApi.Entity;
 
 namespace MovieStoreWebApi.DBOperations
 {
-    public class MovieStoreDbContext : DbContext //EF paketi ile dbContext sınıfından kalıtım aldık.
+    public class MovieStoreDbContext : DbContext //Entity Framework Core tarafından sağlanan DbContext sınıfından türetilmiştir.
     {
-        public MovieStoreDbContext(DbContextOptions<MovieStoreDbContext> options) : base(options)
+        /*
+         * (DbContextOptions<MovieStoreDbContext>sınıfı MovieStoreDbContext türündeki bir veritabanı bağlamının yapılandırma seçeneklerini temsil eder.
+         * MovieStoreDbContext için geçerli olan yapılandırma seçeneklerini içerir ve bu seçenekler veritabanı bağlantısının nasıl yapılacağını belirler.
+         * Yapılandırma, bir sistem, uygulama veya bileşenin çalışma şeklini ve davranışını belirlemek için yapılan ayarlamalar ve seçeneklerdir. 
+         *  
+         */
+
+
+        public MovieStoreDbContext(DbContextOptions<MovieStoreDbContext> options) : base(options) //
         {
 
         }
 
-        public DbSet<Movie> Movies { get; set; }
+        public DbSet<Movie> Movies { get; set; } //Veritabanındaki filmlerin koleksiyonunu temsil ediyor
     }
 }

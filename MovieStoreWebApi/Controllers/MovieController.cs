@@ -2,6 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieStoreWebApi.DBOperations;
 using MovieStoreWebApi.Entity;
+using MovieStoreWebApi.MovieOperations.CreateMovie;
+using MovieStoreWebApi.MovieOperations.DeleteMovie;
+using MovieStoreWebApi.MovieOperations.GetMovie;
+using MovieStoreWebApi.MovieOperations.GetMovieDetail;
+using MovieStoreWebApi.MovieOperations.UpdateMovie;
 
 namespace MovieStoreWebApi.Controllers
 {
@@ -18,66 +23,87 @@ namespace MovieStoreWebApi.Controllers
 
 
         [HttpGet]
-        public List<Movie> Get()
+        public IActionResult Get()
         {
-            var movieList = _context.Movies.OrderBy(x => x.MovieId).ToList<Movie>();
-            return movieList;
+            GetMovieQuery getMovieQuery = new GetMovieQuery(_context);
+            var result = getMovieQuery.Handle();
+            return Ok(result);
         }
 
 
         [HttpGet("{id}")]
-        public ActionResult GetById(int id)
+        public IActionResult GetById(int id)
         {
-            var movie = _context.Movies.Where(x => x.MovieId == id).FirstOrDefault();
-            if (movie is null)
-                return NotFound();
-            return Ok(movie);
+            MovieDetailViewModel result;
+            try
+            {
+                GetMovieDetailQuery getMovieDetailQuery = new GetMovieDetailQuery(_context);
+                getMovieDetailQuery.MovieId = id;
+                result = getMovieDetailQuery.Handle();
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+            return Ok(result);
             
         }
 
 
         [HttpPost]
-        public IActionResult AddMovie([FromBody] Movie newMovie)
+        public IActionResult AddMovie([FromBody] CreateMovieModel newMovie)
         {
-            var movie = _context.Movies.SingleOrDefault(x => x.MovieName == newMovie.MovieName);
-            if (movie is not null)
-                return BadRequest();
-
-            _context.Movies.Add(newMovie);
-            _context.SaveChanges();
+            CreateMovieCommand command = new CreateMovieCommand(_context);
+            try
+            {
+                command.Model = newMovie;
+                command.Handle();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }            
+            
             return Ok();
         }
 
 
         [HttpPut("{id}")]
-        public IActionResult UpdateMovie(int id, [FromBody] Movie updateMovie)
+        public IActionResult UpdateMovie(int id, [FromBody] UpdateMovieModel updateMovie)
         {
-            var movie = _context.Movies.SingleOrDefault(x => x.MovieId == id);
-            if (movie is null)
-                return NotFound();
+            try
+            {
+                UpdateMovieCommand command = new UpdateMovieCommand(_context);
+                command.Movie_Id = id;
+                command.Model = updateMovie;
+                command.Handle();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
 
-            movie.MovieName = updateMovie.MovieName != default ? updateMovie.MovieName : movie.MovieName;
-            movie.MovieYear = updateMovie.MovieYear != default ? updateMovie.MovieYear : movie.MovieYear;
-            movie.GenreId = updateMovie.GenreId != default ? updateMovie.GenreId : movie.GenreId;
-            movie.Director = updateMovie.Director != default ? updateMovie.Director : movie.Director;
-            movie.Actors = updateMovie.Actors != default ? updateMovie.Actors : movie.Actors;
-            movie.Price = updateMovie.Price != default ? updateMovie.Price : movie.Price;
-
-            _context.SaveChanges();
-
-            return Ok(movie);
+            return Ok();
         }
 
 
         [HttpDelete("{id}")]
         public IActionResult DeleteMovie(int id)
         {
-            var movie = _context.Movies.Where(x => x.MovieId == id).SingleOrDefault();
-            if (movie is null)            
-                return NotFound();
 
-            _context.Movies.Remove(movie);
-            _context.SaveChanges();
+            try
+            {
+                DeleteMovieCommand command = new DeleteMovieCommand(_context);
+                command.Movie_Id = id;
+                command.Handle();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
             return Ok();
         }
     }
