@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace MovieStoreWebApi.MovieOperations.CreateMovie
+namespace MovieStoreWebApi.Application.MovieOperations.Commands.UpdateMovie
 {
-    public class CreateMovieCommandValidator : AbstractValidator<CreateMovieCommand>
+    public class UpdateMovieCommandValidator : AbstractValidator<UpdateMovieCommand>
     {
-        public CreateMovieCommandValidator()
+        public UpdateMovieCommandValidator()
         {
             RuleFor(movie => movie.Model.MovieName)
             .NotEmpty().WithMessage("Movie name cannot be empty.")
@@ -21,5 +20,4 @@ namespace MovieStoreWebApi.MovieOperations.CreateMovie
                 .GreaterThan(0).WithMessage("Invalid price.");
         }
     }
-    
 }

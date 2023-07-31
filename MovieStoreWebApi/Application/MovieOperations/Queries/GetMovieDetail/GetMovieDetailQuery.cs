@@ -2,18 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using MovieStoreWebApi.Common;
 using MovieStoreWebApi.DBOperations;
-using MovieStoreWebApi.MovieOperations.GetMovie;
 
-namespace MovieStoreWebApi.MovieOperations.GetMovieDetail
+namespace MovieStoreWebApi.Application.MovieOperations.Queries.GetMovieDetail
 {
     public class GetMovieDetailQuery
     {
-        private readonly MovieStoreDbContext _dbContext;
+        private readonly IMovieStoreDbContext _dbContext;
         private readonly IMapper _mapper;
 
         public int MovieId { get; set; }
 
-        public GetMovieDetailQuery(MovieStoreDbContext dbContext, IMapper mapper)
+        public GetMovieDetailQuery(IMovieStoreDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -21,12 +20,12 @@ namespace MovieStoreWebApi.MovieOperations.GetMovieDetail
 
         public MovieDetailViewModel Handle()
         {
-            var movie = _dbContext.Movies.Where(x => x.MovieId == MovieId).FirstOrDefault();
+            var movie = _dbContext.Movies.Include(x=>x.Genre).Where(x => x.MovieId == MovieId).FirstOrDefault();
             if (movie is null)
                 throw new InvalidOperationException("The movie is already available.");
 
-            MovieDetailViewModel result = _mapper.Map<MovieDetailViewModel>(movie);           
-                        
+            MovieDetailViewModel result = _mapper.Map<MovieDetailViewModel>(movie);
+
             return result;
         }
     }

@@ -17,6 +17,18 @@ namespace MovieStoreWebApi.DBOperations
                     return;
                 }
 
+
+
+
+                context.Genres.AddRange(
+                    new Genre { GenreName = "ACTION" },
+                    new Genre { GenreName = "ADVENTURE" }
+                    );
+
+
+
+
+
                 context.Movies.AddRange(new Movie
                 {
                     

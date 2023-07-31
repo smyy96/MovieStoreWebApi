@@ -3,23 +3,23 @@ using Microsoft.EntityFrameworkCore;
 using MovieStoreWebApi.DBOperations;
 using MovieStoreWebApi.Entity;
 
-namespace MovieStoreWebApi.MovieOperations.CreateMovie
+namespace MovieStoreWebApi.Application.MovieOperations.Commands.CreateMovie
 {
     public class CreateMovieCommand
     {
 
         public CreateMovieModel Model { get; set; }
-        private readonly MovieStoreDbContext _dbContext;
+        private readonly IMovieStoreDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public CreateMovieCommand(MovieStoreDbContext dbContext, IMapper mapper)
+        public CreateMovieCommand(IMovieStoreDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
         }
 
 
-        public void Handle() 
+        public void Handle()
         {
             var movie = _dbContext.Movies.SingleOrDefault(x => x.MovieName == Model.MovieName);
             if (movie is not null)

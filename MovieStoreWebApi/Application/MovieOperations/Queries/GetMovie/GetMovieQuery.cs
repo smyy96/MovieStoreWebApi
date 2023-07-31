@@ -4,14 +4,14 @@ using MovieStoreWebApi.Common;
 using MovieStoreWebApi.DBOperations;
 using MovieStoreWebApi.Entity;
 
-namespace MovieStoreWebApi.MovieOperations.GetMovie
+namespace MovieStoreWebApi.Application.MovieOperations.Queries.GetMovie
 {
     public class GetMovieQuery
     {
-        private readonly MovieStoreDbContext _dbContext;
+        private readonly IMovieStoreDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public GetMovieQuery(MovieStoreDbContext dbContext, IMapper mapper)
+        public GetMovieQuery(IMovieStoreDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -19,7 +19,7 @@ namespace MovieStoreWebApi.MovieOperations.GetMovie
 
         public List<MovieViewModel> Handle()
         {
-            var movieList = _dbContext.Movies.OrderBy(x => x.MovieId).ToList<Movie>();
+            var movieList = _dbContext.Movies.Include(x=>x.Genre).OrderBy(x => x.MovieId).ToList();
             List<MovieViewModel> result = _mapper.Map<List<MovieViewModel>>(movieList);
             return result;
         }
@@ -29,7 +29,7 @@ namespace MovieStoreWebApi.MovieOperations.GetMovie
 
     public class MovieViewModel
     {
-        
+
         public string? MovieName { get; set; }
         public int MovieYear { get; set; }
         public string? Genre { get; set; }

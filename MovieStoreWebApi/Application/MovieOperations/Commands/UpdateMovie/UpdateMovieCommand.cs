@@ -2,15 +2,15 @@
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MovieStoreWebApi.DBOperations;
 
-namespace MovieStoreWebApi.MovieOperations.UpdateMovie
+namespace MovieStoreWebApi.Application.MovieOperations.Commands.UpdateMovie
 {
     public class UpdateMovieCommand
     {
-        private readonly MovieStoreDbContext _dbContext;
+        private readonly IMovieStoreDbContext _dbContext;
         public UpdateMovieModel Model = new UpdateMovieModel();
         public int Movie_Id { get; set; }
 
-        public UpdateMovieCommand(MovieStoreDbContext dbContext)
+        public UpdateMovieCommand(IMovieStoreDbContext dbContext)
         {
             _dbContext = dbContext;
         }

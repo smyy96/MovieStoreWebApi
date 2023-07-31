@@ -3,13 +3,14 @@ using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MovieStoreWebApi.Application.MovieOperations.Commands.CreateMovie;
+using MovieStoreWebApi.Application.MovieOperations.Commands.DeleteMovie;
+using MovieStoreWebApi.Application.MovieOperations.Commands.UpdateMovie;
+using MovieStoreWebApi.Application.MovieOperations.Queries.GetMovie;
+using MovieStoreWebApi.Application.MovieOperations.Queries.GetMovieDetail;
 using MovieStoreWebApi.DBOperations;
 using MovieStoreWebApi.Entity;
-using MovieStoreWebApi.MovieOperations.CreateMovie;
-using MovieStoreWebApi.MovieOperations.DeleteMovie;
-using MovieStoreWebApi.MovieOperations.GetMovie;
-using MovieStoreWebApi.MovieOperations.GetMovieDetail;
-using MovieStoreWebApi.MovieOperations.UpdateMovie;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace MovieStoreWebApi.Controllers
 {
@@ -17,11 +18,11 @@ namespace MovieStoreWebApi.Controllers
     [Route("[controller]s")]
     public class MovieController : Controller
     {
-        private readonly MovieStoreDbContext _context;
+        private readonly IMovieStoreDbContext _context;
 
         private readonly IMapper _mapper;
 
-        public MovieController(MovieStoreDbContext context, IMapper mapper)
+        public MovieController(IMovieStoreDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
@@ -45,6 +46,8 @@ namespace MovieStoreWebApi.Controllers
             {
                 GetMovieDetailQuery getMovieDetailQuery = new GetMovieDetailQuery(_context, _mapper);
                 getMovieDetailQuery.MovieId = id;
+                GetMovieDetailQueryValidator validations = new GetMovieDetailQueryValidator();
+                validations.ValidateAndThrow(getMovieDetailQuery);
                 result = getMovieDetailQuery.Handle();
             }
             catch (Exception ex)
@@ -53,7 +56,7 @@ namespace MovieStoreWebApi.Controllers
                 return BadRequest(ex.Message);
             }
             return Ok(result);
-            
+
         }
 
 
@@ -61,19 +64,13 @@ namespace MovieStoreWebApi.Controllers
         public IActionResult AddMovie([FromBody] CreateMovieModel newMovie)
         {
             CreateMovieCommand command = new CreateMovieCommand(_context, _mapper);
-            try
-            {
-                command.Model = newMovie;
-                CreateMovieCommandValidator validations = new CreateMovieCommandValidator();
-                validations.ValidateAndThrow(command);                
-                command.Handle();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }            
-            
-            return Ok("Success");
+           
+            command.Model = newMovie;
+            CreateMovieCommandValidator validations = new CreateMovieCommandValidator();
+            validations.ValidateAndThrow(command);
+            command.Handle();
+
+            return Ok(newMovie);
         }
 
 
@@ -85,13 +82,17 @@ namespace MovieStoreWebApi.Controllers
                 UpdateMovieCommand command = new UpdateMovieCommand(_context);
                 command.Movie_Id = id;
                 command.Model = updateMovie;
+
+                UpdateMovieCommandValidator validations = new UpdateMovieCommandValidator();
+                validations.ValidateAndThrow(command);
+
                 command.Handle();
             }
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-            
+
 
             return Ok();
         }
@@ -101,18 +102,18 @@ namespace MovieStoreWebApi.Controllers
         public IActionResult DeleteMovie(int id)
         {
 
-            try
-            {
+            //try
+            //{
                 DeleteMovieCommand command = new DeleteMovieCommand(_context);
                 command.Movie_Id = id;
                 DeleteMovieCommandValidator validations = new DeleteMovieCommandValidator();
                 validations.ValidateAndThrow(command);
                 command.Handle();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            //}
+            //catch (Exception ex)
+            //{
+            //    return BadRequest(ex.Message);
+            //}
 
             return Ok();
         }

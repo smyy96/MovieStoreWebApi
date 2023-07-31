@@ -3,7 +3,7 @@ using MovieStoreWebApi.Entity;
 
 namespace MovieStoreWebApi.DBOperations
 {
-    public class MovieStoreDbContext : DbContext //Entity Framework Core tarafından sağlanan DbContext sınıfından türetilmiştir.
+    public class MovieStoreDbContext :DbContext, IMovieStoreDbContext //Entity Framework Core tarafından sağlanan DbContext sınıfından türetilmiştir.
     {
         /*
          * (DbContextOptions<MovieStoreDbContext>sınıfı MovieStoreDbContext türündeki bir veritabanı bağlamının yapılandırma seçeneklerini temsil eder.
@@ -13,11 +13,18 @@ namespace MovieStoreWebApi.DBOperations
          */
 
 
-        public MovieStoreDbContext(DbContextOptions<MovieStoreDbContext> options) : base(options) //
+        public MovieStoreDbContext(DbContextOptions<MovieStoreDbContext> options) : base(options)
         {
 
         }
 
         public DbSet<Movie> Movies { get; set; } //Veritabanındaki filmlerin koleksiyonunu temsil ediyor
+        public DbSet<Genre> Genres { get; set; }
+        public DbSet<User> Users { get; set; }
+
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
+        }
     }
 }

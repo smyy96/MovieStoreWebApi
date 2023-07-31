@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33103.184
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MovieStoreWebApi", "MovieStoreWebApi\MovieStoreWebApi.csproj", "{9761C093-8BB4-4E7B-9E11-288D4F7950AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MovieStoreWebApi", "MovieStoreWebApi\MovieStoreWebApi.csproj", "{9761C093-8BB4-4E7B-9E11-288D4F7950AF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E181951C-FB7F-4A61-B884-A818277B33D6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi.UnitTests", "Tests\WebApi.UnitTests\WebApi.UnitTests.csproj", "{1F81AE5B-2226-4776-A8A9-59D5C3028BA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +19,16 @@ Global
 		{9761C093-8BB4-4E7B-9E11-288D4F7950AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9761C093-8BB4-4E7B-9E11-288D4F7950AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9761C093-8BB4-4E7B-9E11-288D4F7950AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F81AE5B-2226-4776-A8A9-59D5C3028BA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F81AE5B-2226-4776-A8A9-59D5C3028BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F81AE5B-2226-4776-A8A9-59D5C3028BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F81AE5B-2226-4776-A8A9-59D5C3028BA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1F81AE5B-2226-4776-A8A9-59D5C3028BA7} = {E181951C-FB7F-4A61-B884-A818277B33D6}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {277D274A-E76E-4FB5-9387-732AD76FAD23}

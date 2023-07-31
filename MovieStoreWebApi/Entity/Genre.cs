@@ -6,6 +6,26 @@ namespace MovieStoreWebApi.Entity
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GenreId { get; set; }
-        public string GenreName { get; set; }
+        public string? GenreName { get; set; }
     }
 }
+
+
+/* ACTION=1,
+        ADVENTURE,
+        ANIMATION,
+        COMEDY,
+        CRIME,
+        DOCUMENTARY,
+        DRAMA,
+        FANTASY,
+        HORROR,
+        MYSTERY,
+        ROMANCE,
+        SCIENCE_FICTION,
+        THRILLER,
+        WESTERN,
+        HISTORICAL,
+        MUSICAL,
+        WAR,
+        SUSPENSE */

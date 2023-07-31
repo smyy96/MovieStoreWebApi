@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MovieStoreWebApi.DBOperations;
 
-namespace MovieStoreWebApi.MovieOperations.DeleteMovie
+namespace MovieStoreWebApi.Application.MovieOperations.Commands.DeleteMovie
 {
     public class DeleteMovieCommand
     {
-        private readonly MovieStoreDbContext _dbContext;
+        private readonly IMovieStoreDbContext _dbContext;
 
         public int Movie_Id { get; set; }
 
-        public DeleteMovieCommand(MovieStoreDbContext dbContext)
+        public DeleteMovieCommand(IMovieStoreDbContext dbContext)
         {
             _dbContext = dbContext;
         }
